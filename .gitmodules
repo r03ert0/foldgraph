@@ -1,0 +1,15 @@
+[submodule "bin/meshgeometry"]
+	path = bin/meshgeometry
+	url = https://r03ert0@github.com/r03ert0/meshgeometry
+[submodule "bin/volume"]
+	path = bin/volume
+	url = https://r03ert0@github.com/r03ert0/volume
+[submodule "bin/skeleton"]
+	path = bin/skeleton
+	url = https://r03ert0@github.com/r03ert0/skeleton
+[submodule "bin/mesher"]
+	path = bin/mesher
+	url = https://r03ert0@github.com/r03ert0/mesher
+[submodule "data/external/BrainCatalogueWorkflow"]
+	path = data/external/BrainCatalogueWorkflow
+	url = https://r03ert0@github.com/r03ert0/BrainCatalogueWorkflow
