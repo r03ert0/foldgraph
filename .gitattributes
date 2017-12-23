@@ -1,0 +1,11 @@
+src/** annex.largefiles=nothing
+notebooks/** annex.largefiles=nothing
+* annex.largefiles=(largerthan=10kb)
+*.sh annex.largefiles=nothing
+*.py annex.largefiles=nothing
+*.txt annex.largefiles=nothing
+*.md annex.largefiles=nothing
+*.ipynb annex.largefiles=nothing
+*.pdf annex.largefiles=(largerthan=100kb)
+.gitattributes annex.largefiles=nothing
+.gitignore annex.largefiles=nothing

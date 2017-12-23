@@ -1,0 +1,9 @@
+volume # volume toolbox
+mesh_a_3d_gray_image # mesher
+https://github.com/r03ert0/skeleton # mean curvature flow skeleton
+cgal2curves.py # skeleton cgal to curves converter
+cgal2graph.py # skeleton cgal to graph converter
+meshgeometry # mesh geometry
+tridecimator # mesh triangle decimator
+fold_graph.sh # fold graph script
+bh_tsne # t-sne
