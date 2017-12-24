@@ -13,3 +13,6 @@
 [submodule "data/external/BrainCatalogueWorkflow"]
 	path = data/external/BrainCatalogueWorkflow
 	url = https://r03ert0@github.com/r03ert0/BrainCatalogueWorkflow
+[submodule "bin/bhtsne"]
+	path = bin/bhtsne
+	url = https://r03ert0@github.com/lvdmaaten/bhtsne
