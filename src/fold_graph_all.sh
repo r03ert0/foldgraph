@@ -1,12 +1,9 @@
 f=". fold_graph-v2.sh"
 
-cat ../data/raw-data/subjects.txt| while read s; do
-    echo $s;
-    base=${s%/*}
-    sub=${s#*/}
-    mkdir -p $base;
-    if [ ! -f $s ]; then
-        ln -s $dir/$s $s
-    fi
-    $f $s
+cat ../data/subjects.txt| while read s; do
+    echo s: $s;
+    mesh=${s#*/}
+    sub=${s%/*}
+    mkdir -p ../data/derived/skeleton/$sub;
+    $f ../data/raw/$s ../data/derived/skeleton/$sub
 done

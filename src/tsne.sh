@@ -1,7 +1,7 @@
 perplexity=300
 
-t=/Applications/_Sci/bh_tsne/bhtsne.py
-ls -1d */*_curves.txt|while read f;do
+t=../bin/bh_tsne/bhtsne.py
+ls -1d ../data/derived/skeleton/*/*_curves.txt|while read f;do
     echo $f
     g=${f%.txt};
     awk '{if(NR==1){print $1,0,0}}' $f >${g}_tsne${perplexity}.txt
