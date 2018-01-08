@@ -1,4 +1,4 @@
-f=". fold_graph-v2.sh"
+f=". fold_graph-v3.sh"
 
 cat ../data/subjects.txt| while read s; do
     echo s: $s;
