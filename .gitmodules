@@ -4,15 +4,18 @@
 [submodule "bin/volume"]
 	path = bin/volume
 	url = https://r03ert0@github.com/r03ert0/volume
-[submodule "bin/skeleton"]
-	path = bin/skeleton
-	url = https://r03ert0@github.com/r03ert0/skeleton
-[submodule "bin/mesher"]
-	path = bin/mesher
-	url = https://r03ert0@github.com/r03ert0/mesher
 [submodule "data/external/BrainCatalogueWorkflow"]
 	path = data/external/BrainCatalogueWorkflow
 	url = https://r03ert0@github.com/r03ert0/BrainCatalogueWorkflow
+[submodule "bin/bhtsne"]
+	path = bin/bhtsne
+	url = https://r03ert0@github.com/lvdmaaten/bhtsne
+[submodule "bin/mesher"]
+	path = bin/mesher
+	url = https://r03ert0@github.com/r03ert0/mesher
 [submodule "bin/meshparam"]
 	path = bin/meshparam
 	url = https://r03ert0@github.com/r03ert0/meshparam
+[submodule "bin/skeleton"]
+	path = bin/skeleton
+	url = https://r03ert0@github.com/r03ert0/skeleton
