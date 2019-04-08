@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 perplexity=300
 
 t=../bin/bh_tsne/bhtsne.py

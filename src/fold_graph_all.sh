@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 f=". fold_graph-v3.sh"
 
 cat ../data/subjects.txt| while read s; do

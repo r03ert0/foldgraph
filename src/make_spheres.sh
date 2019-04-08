@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mp=../bin/meshparam/meshparam
 
 cat ../data/subjects.txt| while read s; do

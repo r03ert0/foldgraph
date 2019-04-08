@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mg="/Users/roberto/Applications/brainbits/m.meshgeometry/meshgeometry_mac" # mesh geometry
 td="/Applications/_Graph/vcglib/apps/tridecimator/tridecimator" # mesh triangle decimator
 fo="source /Users/roberto/Desktop/annex/fold-graph/fold_graph.sh" # fold graph
