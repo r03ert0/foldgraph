@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # fold_graph
 # Roberto Toro, April 2017
 # Usage:
