@@ -55,6 +55,7 @@ echo "destination: $dst_dir"
 sulc_level0=${dst_dir}${mesh}_sulcLevel0.ply
 sulc_map=${dst_dir}${mesh}_sulcMap.txt
 holes_surf=${dst_dir}${mesh}_holesSurf.ply
+holes_surf_vox=${dst_dir}${mesh}_holesSurfVox.ply
 holes_vol=${dst_dir}${mesh}_holesVol
 skeleton=${dst_dir}${mesh}_skel.cgal
 skeleton_correspondances=${dst_dir}${mesh}_corresp.cgal
@@ -87,14 +88,28 @@ fi
 echo "3. Extrude the mesh"
 read offx offy offz dimx dimy dimz <<<$($mg -i $holes_surf -size -printCentre\
 |awk '/size/{split($2,s,",")}/centre/{split($2,c,",")}END{s[1]+=10;s[2]+=10;s[3]+=10;print c[1]-s[1]/2,c[2]-s[2]/2,c[3]-s[3]/2,int(s[1]+0.5),int(s[2]+0.5),int(s[3]+0.5)}')
-read pixdimx pixdimy pixdimz <<<$(echo $vox_dim $vox_dim $vox_dim)
-dimx=$(echo $dimx/$pixdimx|bc)
-dimy=$(echo $dimy/$pixdimy|bc)
-dimz=$(echo $dimz/$pixdimz|bc)
+dimx=$(echo $dimx/$vox_dim|bc)
+dimy=$(echo $dimy/$vox_dim|bc)
+dimz=$(echo $dimz/$vox_dim|bc)
 echo volume dimensions: $dimx, $dimy, $dimz
-echo pixel dimensions: $pixdimx, $pixdimy, $pixdimz
+echo voxel dimension: $vox_dim
 echo offsets: $offx, $offy, $offz
-$v -new $dimx,$dimy,$dimz,$pixdimx,$pixdimy,$pixdimz,$offx,$offy,$offz -strokeMesh $holes_surf -mult 10000 -boxFilter 1 1 -o ${dst_dir}tmp.bin -o "${dst_dir}holes.nii.gz"
+echo "Convert mesh coordinates to voxel indices"
+
+$mg \
+    -i $holes_surf \
+    -translate $(awk -v x=$offx -v y=$offy -v z=$offz 'BEGIN{printf"%g %g %g",-x,-y,-z}') \
+    -scale $(awk -v d=$vox_dim 'BEGIN{e=1/d;printf"%g,%g,%g",e,e,e}') \
+    -o $holes_surf_vox
+
+$v \
+    -new $dimx,$dimy,$dimz,$vox_dim,$vox_dim,$vox_dim,$offx,$offy,$offz \
+    -strokeMesh $holes_surf_vox \
+    -mult 10000 \
+    -boxFilter 1 1 \
+    -o ${dst_dir}tmp.bin \
+    -o "${dst_dir}holes.nii.gz"
+
 $mc ${dst_dir}tmp.bin ${dst_dir}tmp.hdr.txt $level $holes_vol.ply
 $mg -i $holes_vol.ply -o $holes_vol.off
 #rm ${dst_dir}tmp.nii.gz
