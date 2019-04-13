@@ -10,9 +10,6 @@
 [submodule "bin/bhtsne"]
 	path = bin/bhtsne
 	url = https://r03ert0@github.com/lvdmaaten/bhtsne
-[submodule "bin/mesher"]
-	path = bin/mesher
-	url = https://r03ert0@github.com/r03ert0/mesher
 [submodule "bin/meshparam"]
 	path = bin/meshparam
 	url = https://r03ert0@github.com/r03ert0/meshparam
