@@ -1,2 +1,11 @@
 .DS_Store
 ._.DS_Store
+.vscode/
+bin/marching_cubes/CMakeCache.txt
+bin/marching_cubes/CMakeFiles/
+bin/marching_cubes/Makefile
+bin/marching_cubes/cmake_install.cmake
+bin/marching_cubes/libigl-config.cmake
+bin/marching_cubes/libigl-export.cmake
+bin/marching_cubes/marching_cubes
+.ipynb_checkpoints
