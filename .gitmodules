@@ -19,3 +19,6 @@
 [submodule "bin/skeleton"]
 	path = bin/skeleton
 	url = https://r03ert0@github.com/r03ert0/skeleton
+[submodule "bin/libigl"]
+	path = bin/libigl
+	url = https://r03ert0@github.com/libigl/libigl
