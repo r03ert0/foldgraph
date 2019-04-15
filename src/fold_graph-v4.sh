@@ -10,6 +10,7 @@
 
 # defaults
 level=1000
+decimation=20
 vox_dim=0.25
 
 # parse arguments
@@ -17,6 +18,10 @@ while [[ $# -gt 0 ]]
 do
 key="$1"
 case $key in
+    -d|--decimation-ratio)
+    decimation="$2"
+    shift; shift
+    ;;
     -i|--input)
     src_mesh_file="$2"
     shift; shift
@@ -110,7 +115,7 @@ $v \
     -o ${dst_dir}tmp.bin \
     -o "${dst_dir}holes.nii.gz"
 
-$mc ${dst_dir}tmp.bin ${dst_dir}tmp.hdr.txt $level $holes_vol.ply
+$mc ${dst_dir}tmp.bin ${dst_dir}tmp.hdr.txt $level $decimation $holes_vol.ply
 $mg -i $holes_vol.ply -o $holes_vol.off
 #rm ${dst_dir}tmp.nii.gz
 rm ${dst_dir}tmp.bin

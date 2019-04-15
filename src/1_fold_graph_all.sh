@@ -6,7 +6,7 @@ DEST="../data/derived/skeleton"
 # external command
 f="./fold_graph-v4.sh"
 
-cat ../data/subjects.txt| while read s; do
+cat ../data/baboon.txt| while read s; do
     echo s: $s
     mesh=${s#*/}
     sub=${s%/*}
