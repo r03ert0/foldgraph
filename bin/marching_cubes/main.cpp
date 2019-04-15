@@ -16,7 +16,9 @@ int main(int argc, char * argv[])
   /*
     argv[1] in: bin
     argv[2] in: txt
-    argv[3] out: ply
+    argv[3] in: level
+    argv[4] in: decimation ratio
+    argv[5] out: ply
   */
   using namespace Eigen;
   using namespace std;
@@ -29,14 +31,17 @@ int main(int argc, char * argv[])
   char datatype[512];
   float xvox, yvox, zvox;
   float level;
+  float decimation;
   short *vol;
  
   cout<<"in.bin: "<<argv[1]<<endl;
   cout<<"in.txt: "<<argv[2]<<endl;
   cout<<"in level: "<<argv[3]<<endl;
-  cout<<"out.ply: "<<argv[4]<<endl;
+  cout<<"in decimation: "<<argv[4]<<endl;
+  cout<<"out.ply: "<<argv[5]<<endl;
 
   level=atof(argv[3]);
+  decimation=atof(argv[4]);
 
   f=fopen(argv[2],"r");
   fscanf(f, "dim: %i %i %i ", &xdim, &ydim, &zdim);
@@ -81,10 +86,10 @@ int main(int argc, char * argv[])
 
   // decimate
   cout<<"Decimating..."<<endl;
-  igl::decimate(V1,F1,F1.rows()/20,V2,F2,J);
+  igl::decimate(V1,F1,F1.rows()/decimation,V2,F2,J);
   cout<<"ntris: "<<F2.rows()<<endl;
 
   // Save result
-  igl::writePLY(argv[4],V2,F2,true);
+  igl::writePLY(argv[5],V2,F2,true);
 
 }
