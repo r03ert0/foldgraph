@@ -8,9 +8,9 @@ if [ ! -f "$BASE_DIR/bin/bhtsne/bh_tsne" ]; then
     g++ sptree.cpp tsne.cpp tsne_main.cpp -o bh_tsne -O2
 fi
 
-echo "Compile mesher"
-cd "$BASE_DIR/bin/mesher"
-if [ ! -f "mesh_a_3d_gray_image" ]; then
+echo "Compile marching_cubes"
+cd "$BASE_DIR/bin/marching_cubes"
+if [ ! -f "marching_cubes" ]; then
     cmake .
     make
 fi
