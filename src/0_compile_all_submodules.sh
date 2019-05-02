@@ -8,13 +8,6 @@ if [ ! -f "$BASE_DIR/bin/bhtsne/bh_tsne" ]; then
     g++ sptree.cpp tsne.cpp tsne_main.cpp -o bh_tsne -O2
 fi
 
-echo "Compile mesher"
-cd "$BASE_DIR/bin/mesher"
-if [ ! -f "mesh_a_3d_gray_image" ]; then
-    cmake .
-    make
-fi
-
 echo "Compile meshgeometry"
 if [ ! -f "$BASE_DIR/bin/meshgeometry/meshgeometry_mac" ]; then
     cd "$BASE_DIR/bin/meshgeometry"
@@ -39,5 +32,16 @@ if [ ! -f "$BASE_DIR/bin/volume/volume" ]; then
     cd "$BASE_DIR/bin/volume"
     source compile.sh
 fi
+
+# echo "Compile libigl python bindings"
+# if [ ! -d "$BASE_DIR/bin/libigl/build" ]; then
+#    export PYTHON_LIBRARIES="/usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7/lib/libpython3.7m.dylib"
+#    export PYTHON_INCLUDE_DIR="/usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7/include/python3.7m"
+#    cd "$BASE_DIR/bin/libigl"
+#    mkdir build
+#    cd build
+#    cmake ..
+#    make
+# fi
 
 cd "$BASE_DIR/src"
