@@ -9,18 +9,31 @@ const opt = {
 const tsne = new tsnejs.tSNE(opt); // create a tSNE instance
 const R = 10;
 
-let i, j, k;
-
-// progressively project Y to a sphere of radius R
-function spherical_projection(Y) {
-    let radius;
-    for(i=0;i<Y.length;i++) {
-        const [x,y,z] = Y[i];
-        radius = Math.sqrt(x*x+y*y+z*z) / R;
-        Y[i][0] = 0.9*Y[i][0] + 0.1*x/radius;
-        Y[i][1] = 0.9*Y[i][1] + 0.1*y/radius;
-        Y[i][2] = 0.9*Y[i][2] + 0.1*z/radius;
+// load graph
+function load_graph(curvesPath) {
+    let i;
+    const str = fs.readFileSync(curvesPath).toString();
+    const arr = str.split('\n');
+    const [nv, nt, ne] = arr[0].split(' ').map((o)=>parseInt(o));
+    console.log(`Reading nverts: ${nv}, ntris:${nt}, nedges: ${ne}`);
+    let tmpVerts = [];
+    let tmpEdges = [];
+    for(i=0;i<nv;i++) {
+        tmpVerts.push(arr[i+1].split(' ').map((o)=>parseFloat(o)));
     }
+    for(i = 0; i<ne; i++) {
+        tmpEdges.push(arr[1+nv+i].split(' ').map((o)=>parseInt(o)));
+    }
+    return [tmpVerts, tmpEdges];
+}
+
+//save graph
+function save_graph(graph_path, verts, edges) {
+    fs.writeFileSync(graph_path, [
+        `${verts.length} 0 ${edges.length}`,
+        ...verts.map((o)=>o.join(' ')),
+        ...edges.map((o)=>o.join(' '))
+    ].join('\n'));
 }
 
 // combine vertices which are too close
@@ -61,19 +74,8 @@ function combine_vertices(verts, edges) {
         }
     }
 
-    // sort edges in ascending order, and such that for e(a,b), a<b.
-    for(e of edges) {
-        if(e[1]<e[0]) {
-            const tmp = e[0];
-            e[0] = e[1];
-            e[1] = tmp;
-        }
-    }
-    edges.sort((a, b) => {
-        if(a[0]<b[0]) { return -1}
-        else if (a[0]>b[0]) { return 1}
-        else return a[1]-b[1];
-    });
+    sort_edges(edges);
+
     for(i=0;i<edges.length;i++) {
         const a = lut[edges[i][0]];
         const b = lut[edges[i][1]];
@@ -86,11 +88,50 @@ function combine_vertices(verts, edges) {
     return [uniqueVerts, uniqueEdges];
 }
 
+function remove_vertex_at_index(index, verts, edges) {
+    const arr = [];
+    // remove the vertex
+    verts.splice(index, 1);
+
+    // remove the affected edges
+    for(let i=edges.length-1;i>=0;i--) {
+        const ed = edges[i];
+        if(ed[0] === index ) {
+            arr.push(ed[1]);
+            edges.splice(i,1);
+        }
+        if(ed[1] === index) {
+            arr.push(ed[0]);
+            edges.splice(i,1);
+        }
+    }
+    if(arr.length > 2) {
+        console.error("Only vertices of degree 0, 1 or 2 can be removed. Degree =", arr.length);
+        return;
+    }
+
+    // push a new edge bridging over the removed one if degree 2
+    if(arr.length == 2) {
+        edges.push(arr);
+    }
+
+    // adjust the indices of the remaining vertices
+    for(let ed of edges) {
+        if(ed[0] > index) {
+            ed[0]--;
+        }
+        if(ed[1] > index) {
+            ed[1]--;
+        }
+    }
+}
+
 // extract graph lines from curves
 function graph_from_curves(Y, edges) {
     const newVerts = [];
     const newEdges = [];
     let i;
+
     newVerts.push(Y[0]);
     for(i = 0; i < edges.length - 1; i++) {
         if(edges[i][1] != edges[i+1][0]) {
@@ -105,24 +146,79 @@ function graph_from_curves(Y, edges) {
     return [newVerts, newEdges];
 }
 
-// load data
-function load_data(curvesPath) {
+// remove elbow vertices and isolated vertices -- in place
+function remove_elbow_vertices(verts, edges) {
     let i;
-    const str = fs.readFileSync(curvesPath).toString();
-    const arr = str.split('\n');
-    const [nv, nt, ne] = arr[0].split(' ').map((o)=>parseInt(o));
-    console.log(nv,nt,ne);
-    let tmpVerts = [];
-    let tmpEdges = [];
-    let dists = [];
-    for(i=0;i<nv;i++) {
-        tmpVerts.push(arr[i+1].split(' ').map((o)=>parseFloat(o)));
-        dists.push([]);
+    let nremoved = 0;
+    const degree = [];
+
+    // compute vertices's degrees
+    for(i=0;i<verts.length; i++) {
+        degree[i] = 0;
     }
-    for(i = 0; i<ne; i++) {
-        tmpEdges.push(arr[1+nv+i].split(' ').map((o)=>parseInt(o)));
+    for(let ed of edges) {
+        degree[ed[0]]++;
+        degree[ed[1]]++;
     }
-    return [tmpVerts, tmpEdges];
+    for(i=verts.length-1;i>=0;i--) {
+        if(degree[i] === 2) {
+            console.log("Remove elbow vertex", i);
+            remove_vertex_at_index(i, verts, edges);
+            nremoved++;
+        } else if(degree[i] == 0 ) {
+            console.log("Remove isolated vertex", i);
+            remove_vertex_at_index(i, verts, edges);
+            nremoved++;
+        }
+    }
+
+    return nremoved;
+}
+// sort edges in ascending order, and such that for e(a,b), a<b, in place.
+function sort_edges(edges) {
+    for(const e of edges) {
+        if(e[1]<e[0]) {
+            const tmp = e[0];
+            e[0] = e[1];
+            e[1] = tmp;
+        }
+    }
+    edges.sort((a, b) => {
+        if(a[0]<b[0]) { return -1}
+        else if (a[0]>b[0]) { return 1}
+        else return a[1]-b[1];
+    });
+}
+
+// remove repeated edges, in place
+function remove_repeated_edges(edges) {
+    let nremoved = 0;
+
+    sort_edges(edges);
+
+    for(let i = edges.length-1;i>0;i--) {
+        const e1 = edges[i];
+        const e2 = edges[i-1];
+        if(e1[0] === e2[0] && e1[1] === e2[1]) {
+            console.log("Remove repeated edge", e1);
+            edges.splice(i, 1);
+            nremoved++;
+        }
+    }
+
+    return nremoved;
+}
+
+// progressively project Y to a sphere of radius R (inplace)
+function spherical_projection(Y) {
+    let radius;
+    for(i=0;i<Y.length;i++) {
+        const [x,y,z] = Y[i];
+        radius = Math.sqrt(x*x+y*y+z*z) / R;
+        Y[i][0] = 0.9*Y[i][0] + 0.1*x/radius;
+        Y[i][1] = 0.9*Y[i][1] + 0.1*y/radius;
+        Y[i][2] = 0.9*Y[i][2] + 0.1*z/radius;
+    }
 }
 
 // run tSNE
@@ -161,7 +257,7 @@ function run_tsne(verts) {
     // run tsne
     for(k = 0; k < 100; k++) {
         tsne.step();
-        console.log(k, Y[0]);
+        // console.log(k, Y[0]);
         spherical_projection(Y);
     }
 
@@ -170,6 +266,7 @@ function run_tsne(verts) {
 
 // polar stereographic projection
 function stereographic(Y) {
+    let i;
     for(i=0;i<Y.length;i++) {
         let [x, y, z] = Y[i];
         const radius = Math.sqrt(x*x+y*y+z*z);
@@ -186,17 +283,27 @@ function stereographic(Y) {
     return Y;
 }
 
-function save_graph(graph_path, verts, edges) {
-    fs.writeFileSync(graph_path, [
-        `${verts.length} 0 ${edges.length}`,
-        ...verts.map((o)=>o.join(' ')),
-        ...edges.map((o)=>o.join(' '))
-    ].join('\n'));
+// make a graph
+function simplify_graph(newVerts, newEdges) {
+    const [uniqueVerts, uniqueEdges] = combine_vertices(newVerts, newEdges);
+    
+    let didChange;
+    do {
+        didChange = 0;
+        didChange += remove_elbow_vertices(uniqueVerts, uniqueEdges);
+        didChange += remove_repeated_edges(uniqueEdges);
+    } while(didChange > 0);
+
+    return [uniqueVerts, uniqueEdges];
 }
 
+// get arguments
+const path_skel_curves = process.argv[2];
+const path_output_root = process.argv[3];
+
 // load skeleton curves
-let [tmpVerts, tmpEdges] = load_data('../data/derived/skeleton/baboon/both_skel_curves.txt');
-let [verts, edges] = combine_vertices(tmpVerts, tmpEdges);
+let [verts, edges] = load_graph(path_skel_curves);
+//let [verts, edges] = combine_vertices(tmpVerts, tmpEdges);
 
 // project the curves into a sphere using tSNE
 let Y = run_tsne(verts);
@@ -205,11 +312,16 @@ let Y = run_tsne(verts);
 let flatY = stereographic(Y);
 
 // save the resulting flat curves
-save_graph('result_curves.txt', flatY, edges);
+save_graph(path_output_root + '_curves.txt', flatY, edges);
 
 // make a graph
 const [newVerts, newEdges] = graph_from_curves(flatY, edges);
-const [uniqueVerts, uniqueEdges] = combine_vertices(newVerts, newEdges);
 
-// save the resulting flat graph
-save_graph('result_graph.txt', uniqueVerts, uniqueEdges);
+// save the final graph
+save_graph(path_output_root + '_intermediate.txt', newVerts, newEdges);
+
+// remove elbow vertices and repeated edges
+const [uniqueVerts, uniqueEdges] = simplify_graph(newVerts, newEdges);
+
+// save the final graph
+save_graph(path_output_root + '_graph.txt', uniqueVerts, uniqueEdges);
