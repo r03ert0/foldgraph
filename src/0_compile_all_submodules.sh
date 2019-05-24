@@ -40,4 +40,15 @@ if [ ! -f "$BASE_DIR/bin/volume/volume" ]; then
     source compile.sh
 fi
 
+# echo "Compile libigl python bindings"
+# if [ ! -d "$BASE_DIR/bin/libigl/build" ]; then
+#    export PYTHON_LIBRARIES="/usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7/lib/libpython3.7m.dylib"
+#    export PYTHON_INCLUDE_DIR="/usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7/include/python3.7m"
+#    cd "$BASE_DIR/bin/libigl"
+#    mkdir build
+#    cd build
+#    cmake ..
+#    make
+# fi
+
 cd "$BASE_DIR/src"

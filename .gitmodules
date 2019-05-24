@@ -19,3 +19,9 @@
 [submodule "bin/libigl"]
 	path = bin/libigl
 	url = https://r03ert0@github.com/libigl/libigl
+[submodule "bin/tsnejs"]
+	path = bin/tsnejs
+	url = https://github.com/karpathy/tsnejs.git
+[submodule "bin/GMatch4py"]
+	path = bin/GMatch4py
+	url = https://github.com/Jacobe2169/GMatch4py.git

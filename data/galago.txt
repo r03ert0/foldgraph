@@ -1,1 +1,0 @@
-galago/both.ply

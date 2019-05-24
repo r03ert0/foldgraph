@@ -1,9 +1,13 @@
+ApelleCebusApell_f4b9/mesh.ply
 baboon/both.ply
 capuchin/both.ply
 ce_macaque/both.ply
+chimpanzee/both.ply
+ColobeColobusPol_6118/mesh.ply
 douroucouli/both.ply
 galago/both.ply
 gorilla/both.ply
+MacacaMulatta_mm01/mesh.ply
 mangabey/both.ply
 orangutan/both.ply
 rhesus_macaque/both.ply

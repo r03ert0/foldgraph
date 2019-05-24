@@ -6,7 +6,7 @@ DEST="../data/derived/skeleton"
 # external command
 f="./fold_graph-v4.sh"
 
-cat ../data/douroucouli.txt| while read -r s; do
+cat ../data/subjects.txt| while read -r s; do
     echo "s: $s"
     mesh=${s#*/}
     sub=${s%/*}
@@ -28,11 +28,11 @@ cat ../data/douroucouli.txt| while read -r s; do
         fi
     fi
 
-    config="$RAW/$sub/config.txt"
-    echo "Looking for $config"
-    if [ -f "$config" ]; then
+    fconfig="$RAW/$sub/foldgraph-config.txt"
+    echo "Looking for $fconfig"
+    if [ -f "$fconfig" ]; then
         echo "Using configuration file"
-        x=$(sed 's/^/--/' "$config")
+        x=$(sed 's/^/--/' "$fconfig")
         args="$args $x"
     fi
 
