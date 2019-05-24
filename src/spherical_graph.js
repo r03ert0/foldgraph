@@ -297,13 +297,32 @@ function simplify_graph(newVerts, newEdges) {
     return [uniqueVerts, uniqueEdges];
 }
 
+function rotvec(R, v) {
+    return [
+        R[0]*v[0] + R[1]*v[1] + R[2]*v[2],
+        R[3]*v[0] + R[4]*v[1] + R[5]*v[2],
+        R[6]*v[0] + R[7]*v[1] + R[8]*v[2],
+    ]
+}
+
 // get arguments
 const path_skel_curves = process.argv[2];
 const path_output_root = process.argv[3];
+let rotation;
+if(process.argv[4] === "--rotation") {
+    rotation = process.argv[5].split(",").map((o) => parseFloat(o));
+    console.log("Using rotation matrix", rotation);
+}
 
 // load skeleton curves
 let [verts, edges] = load_graph(path_skel_curves);
-//let [verts, edges] = combine_vertices(tmpVerts, tmpEdges);
+
+// rotate if required
+if(typeof rotation !== "undefined") {
+    for(let i=0;i<verts.length;i++) {
+        verts[i] = rotvec(rotation, verts[i]);
+    }
+}
 
 // project the curves into a sphere using tSNE
 let Y = run_tsne(verts);
