@@ -26,15 +26,18 @@ and then run
 `source 1_fold_graph_all.sh`  
 
 #### Adjust parameters
-You can modify the default parameters for the *iso-surface level*, the *voxel size* and the *decimation ratio* used during the marching cubes. To do so, provide a `config.txt` next to your rawmesh.ply inside your `data/raw/subject/` folder containing the following:  
+You can modify the default parameters for the *iso-surface level*, the *voxel size* and the *decimation ratio* used during the marching cubes. To do so, provide a `foldgraph-config.txt` next to your rawmesh.ply inside your `data/raw/subject/` folder containing the following:  
 `isosurface-level 1000`  
 `vox-dim 0.125`  
 `decimation-ratio 20`  
-The default values are `1000`, `0.25` and `20`.
+The default values are `1000`, `0.25` and `20`.  
  
 * *isosurface-level*. If you make the isosurf level larger: the surface will be thinner; if you decrease the number: the surface will be thicker (and gyri may fuse in wrong places, careful, but it closes little holes on the other hand).
 * *vox-dim*. The voxel size used during the marching cubes algorithm. The bigger, the thicker the surface volume will be (and gryi may fuse at some point in werong places); the smaller voxels --> the less likely it will fuse. For smaller brains it is advantageous to decrease the number from default (0.25) to eg. 0.125.
-* *decimation-ratio*. If you decrease vox dim, you may want to increase the decimation ratio to stay with a reasonable number of triangles per mesh. For example in a mid-sized mesh, at voxel size 0.25, this gives 45000 triangles. So at 0.1 voxel size, it will instead of 40k generate 400k triangles --> adjust decimation-ratio to 200.
+* *decimation-ratio*. If you decrease vox dim, you may want to increase the decimation ratio to stay with a reasonable number of triangles per mesh. For example in a mid-sized mesh, at voxel size 0.25, this gives 45000 triangles. So at 0.1 voxel size, it will instead of 40k generate 400k triangles --> adjust decimation-ratio to 200.  
+
+#### Provide a rotation matrix for the raw mesh
+You can also provide a rotation matrix along with he raw mesh data, called `sphericalgraph-config.txt`. It will reorient the mesh prior to spherical projection and flattening of the raw skeleton.
 
 #### Provide a manually curated *Holes Surface*.
 The *holes surface* is the original surface mesh provided as input where the sulcal regions have been removed. The removal is based on the mean curvature of the surface, which in some cases may not be satisfactory. You can use a mesh editing application -- we use MeshSurgery -- to modifi this mesh. You can check and modify the `mesh_holesSurf.ply` manually, and delete bridges, or tunnels as appropriate, before it will be turned into a volume. This manually modified `mesh_holesSurf.ply` has to be inside your `data/raw/subject/` folder and the algorithm will start from there next time you execute the script.
