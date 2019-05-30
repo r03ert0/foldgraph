@@ -210,6 +210,7 @@ function remove_repeated_edges(edges) {
 }
 
 // progressively project Y to a sphere of radius R (inplace)
+// to move to the sphere slowlier, change the values to 0.95 and 0.05 or comparably
 function spherical_projection(Y) {
     let radius;
     for(i=0;i<Y.length;i++) {
@@ -255,6 +256,7 @@ function run_tsne(verts) {
     }
 
     // run tsne
+    /*for(k = 0; k < 5000; k++) {*/ /*for big complex brains, increase number of tsne iterations*/
     for(k = 0; k < 100; k++) {
         tsne.step();
         // console.log(k, Y[0]);
@@ -326,6 +328,9 @@ if(typeof rotation !== "undefined") {
 
 // project the curves into a sphere using tSNE
 let Y = run_tsne(verts);
+
+// save the spherical graph before flattening
+save_graph(path_output_root + '_curves_sphere.txt', Y, edges);
 
 // flatten the sphere into a disc
 let flatY = stereographic(Y);
