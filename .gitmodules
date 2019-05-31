@@ -4,9 +4,6 @@
 [submodule "bin/volume"]
 	path = bin/volume
 	url = https://r03ert0@github.com/r03ert0/volume
-[submodule "data/external/BrainCatalogueWorkflow"]
-	path = data/external/BrainCatalogueWorkflow
-	url = https://r03ert0@github.com/r03ert0/BrainCatalogueWorkflow
 [submodule "bin/meshparam"]
 	path = bin/meshparam
 	url = https://r03ert0@github.com/r03ert0/meshparam
