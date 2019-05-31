@@ -8,6 +8,9 @@
 # Output: A fold graph plus a series of intermediate results
 # Optional: A mesh with sulci removed to use instead of computing one
 
+# directory of the current script
+MY_DIR="`dirname \"$0\"`"
+
 # defaults
 level=1000
 decimation=20
@@ -73,13 +76,13 @@ skeleton_graph=${dst_dir}${mesh}_skel_graph.txt
 spherical=${dst_dir}${mesh}_spherical.ply
 
 # binary references
-mg=../bin/meshgeometry/meshgeometry_mac
-v=../bin/volume/volume
-mc=../bin/marching_cubes/marching_cubes
-sk=../bin/skeleton/skeleton/skeleton
-c2c=../bin/skeleton/cgal2curves.py
-c2g=../bin/skeleton/cgal2graph.py
-mp=../bin/meshparam/meshparam
+mg="$MY_DIR/../bin/meshgeometry/meshgeometry_mac"
+v="$MY_DIR/../bin/volume/volume"
+mc="$MY_DIR/../bin/marching_cubes/marching_cubes"
+sk="$MY_DIR/../bin/skeleton/skeleton/skeleton"
+c2c="$MY_DIR/../bin/skeleton/cgal2curves.py"
+c2g="$MY_DIR/../bin/skeleton/cgal2graph.py"
+mp="$MY_DIR/../bin/meshparam/meshparam"
 
 # processing
 
