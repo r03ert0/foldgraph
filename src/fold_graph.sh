@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# fold_graph
+# fold_graph v4
 # Roberto Toro, April 2017
 # Usage:
 #    source fold_graph mesh.ply destination_dir [mesh_with_holes.ply]

@@ -4,7 +4,7 @@ RAW="../data/raw"
 DEST="../data/derived/skeleton"
 
 # external command
-f="./fold_graph-v4.sh"
+f="./fold_graph.sh" # fold_graph v4
 
 cat ../data/subjects.txt| while read -r s; do
     echo "s: $s"
