@@ -16,3 +16,6 @@
 [submodule "bin/tsnejs"]
 	path = bin/tsnejs
 	url = https://github.com/karpathy/tsnejs.git
+[submodule "bin/marching_cubes"]
+	path = bin/marching_cubes
+	url = https://github.com/neuroanatomy/marching_cubes.git
