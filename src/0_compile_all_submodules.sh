@@ -15,6 +15,12 @@ if [ ! -f "$BASE_DIR/bin/meshgeometry/meshgeometry_mac" ]; then
     source compile.sh
 fi
 
+echo "Compile meshparam"
+if [ ! -f "$BASE_DIR/bin/meshparam/meshparam" ]; then
+    cd "$BASE_DIR/bin/meshparam"
+    source compile.sh
+fi
+
 echo "Compile skeleton"
 cd "$BASE_DIR/bin/skeleton/skeleton"
 if [ ! -f "skeleton" ]; then
