@@ -1,1 +1,2 @@
+baboon/both.ply
 ce_macaque/both.ply
