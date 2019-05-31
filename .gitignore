@@ -9,3 +9,5 @@ bin/marching_cubes/libigl-config.cmake
 bin/marching_cubes/libigl-export.cmake
 bin/marching_cubes/marching_cubes
 .ipynb_checkpoints
+/data/derived/
+/scratch/work_roberto/no-git

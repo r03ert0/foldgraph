@@ -1,3 +1,0 @@
-isosurface-level 1000
-vox-dim 0.15
-decimation-ratio 60
