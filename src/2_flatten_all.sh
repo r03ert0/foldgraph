@@ -10,7 +10,7 @@ DEST="../data/derived/flat"
 # external commands
 sf="node spherical_graph.js"
 
-cat ../data/douroucouli.txt| while read -r s; do
+cat ../data/subjects.txt| while read -r s; do
     echo "s: $s"
     mesh=${s#*/}
     mesh=${mesh%.ply}

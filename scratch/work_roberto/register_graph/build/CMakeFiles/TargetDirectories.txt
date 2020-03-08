@@ -1,0 +1,4 @@
+/Users/roberto/Documents/annex-foldgraph/src/register_graph/build/CMakeFiles/sphere_skel.dir
+/Users/roberto/Documents/annex-foldgraph/src/register_graph/build/CMakeFiles/install.dir
+/Users/roberto/Documents/annex-foldgraph/src/register_graph/build/CMakeFiles/ALL_BUILD.dir
+/Users/roberto/Documents/annex-foldgraph/src/register_graph/build/CMakeFiles/ZERO_CHECK.dir

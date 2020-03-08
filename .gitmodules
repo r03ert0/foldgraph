@@ -4,12 +4,6 @@
 [submodule "bin/volume"]
 	path = bin/volume
 	url = https://r03ert0@github.com/r03ert0/volume
-[submodule "data/external/BrainCatalogueWorkflow"]
-	path = data/external/BrainCatalogueWorkflow
-	url = https://r03ert0@github.com/r03ert0/BrainCatalogueWorkflow
-[submodule "bin/bhtsne"]
-	path = bin/bhtsne
-	url = https://r03ert0@github.com/lvdmaaten/bhtsne
 [submodule "bin/meshparam"]
 	path = bin/meshparam
 	url = https://r03ert0@github.com/r03ert0/meshparam
@@ -22,6 +16,6 @@
 [submodule "bin/tsnejs"]
 	path = bin/tsnejs
 	url = https://github.com/karpathy/tsnejs.git
-[submodule "bin/GMatch4py"]
-	path = bin/GMatch4py
-	url = https://github.com/Jacobe2169/GMatch4py.git
+[submodule "bin/marching_cubes"]
+	path = bin/marching_cubes
+	url = https://github.com/neuroanatomy/marching_cubes.git
