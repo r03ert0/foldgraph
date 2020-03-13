@@ -4,7 +4,7 @@ Roberto Toro, Katja Heuer, May 2017
 ## Description
 Folding patterns in different species are very characteristic, however, their description remains mostly qualitative. `foldgraph` is a script to convert folding patterns into graphs. These graphs can then be compared quantitatively, using for example the *Graph Edit Distance* algorithm.
 
-![foldgraph.png](foldgraph.png)
+![foldgraph](foldgraph.jpg)
 
 ## Getting started
 
