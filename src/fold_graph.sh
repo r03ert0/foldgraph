@@ -71,8 +71,8 @@ if [ "$precomputed_holes_vol" == "" ]; then
         echo "1. Light Laplace smooth, compute mean curvature, remove sulci, light Laplace smooth"
         $mg -i "$src_mesh_file" -laplaceSmooth 0.5 10 -curv -addVal -0.1 -level 0 -o "$sulc_level0" -odata "$sulc_map" -removeVerts -laplaceSmooth 0.5 10 -o "$holes_surf"
 
-        echo "2. Make spherical"
-        $mp -i "$sulc_level0" -o "$spherical"
+        #echo "2. Make spherical"
+        #$mp -i "$sulc_level0" -o "$spherical"
     else
         echo "1. Using precomputed surface without sulci"
         cp "$precomputed_holes_surf" "$holes_surf"
@@ -80,6 +80,7 @@ if [ "$precomputed_holes_vol" == "" ]; then
 
     echo "3. Extrude the mesh"
     $mg -i "$holes_surf" -extrude -1 -o "$holes_vol.ply"
+    #$mg -i "$holes_surf" -extrude -2 -o "$holes_vol.ply"
 else
     echo "1. Using precomputed volumetric surface without sulci"
     cp "$precomputed_holes_vol" "$holes_vol.ply"
