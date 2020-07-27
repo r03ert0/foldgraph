@@ -3,7 +3,7 @@
 # fold_graph v5
 # Roberto Toro, December 2019
 # Usage:
-#    source fold_graph mesh.ply destination_dir [mesh_with_holes.ply]
+#    bash fold_graph.sh -i mesh.ply -o destination_dir [-p mesh_with_holes.ply]
 # Input: A mesh in ply format
 # Output: A fold graph plus a series of intermediate results
 # Optional: A mesh with sulci removed to use instead of computing one
@@ -71,8 +71,8 @@ if [ "$precomputed_holes_vol" == "" ]; then
         echo "1. Light Laplace smooth, compute mean curvature, remove sulci, light Laplace smooth"
         $mg -i "$src_mesh_file" -laplaceSmooth 0.5 10 -curv -addVal -0.1 -level 0 -o "$sulc_level0" -odata "$sulc_map" -removeVerts -laplaceSmooth 0.5 10 -o "$holes_surf"
 
-        echo "2. Make spherical"
-        $mp -i "$sulc_level0" -o "$spherical"
+        #echo "2. Make spherical"
+        #$mp -i "$sulc_level0" -o "$spherical"
     else
         echo "1. Using precomputed surface without sulci"
         cp "$precomputed_holes_surf" "$holes_surf"
@@ -80,6 +80,7 @@ if [ "$precomputed_holes_vol" == "" ]; then
 
     echo "3. Extrude the mesh"
     $mg -i "$holes_surf" -extrude -1 -o "$holes_vol.ply"
+    #$mg -i "$holes_surf" -extrude -2 -o "$holes_vol.ply"
 else
     echo "1. Using precomputed volumetric surface without sulci"
     cp "$precomputed_holes_vol" "$holes_vol.ply"
@@ -87,6 +88,7 @@ fi
 
 echo "4. Skeletonise"
 $mg -i "$holes_vol.ply" -o "$holes_vol.off"
+echo $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
 $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
 
 echo "5. Convert skeleton format, simplify the skeleton into a graph"
