@@ -3,7 +3,7 @@
 # fold_graph v5
 # Roberto Toro, December 2019
 # Usage:
-#    source fold_graph mesh.ply destination_dir [mesh_with_holes.ply]
+#    bash fold_graph.sh -i mesh.ply -o destination_dir [-p mesh_with_holes.ply]
 # Input: A mesh in ply format
 # Output: A fold graph plus a series of intermediate results
 # Optional: A mesh with sulci removed to use instead of computing one
@@ -88,6 +88,7 @@ fi
 
 echo "4. Skeletonise"
 $mg -i "$holes_vol.ply" -o "$holes_vol.off"
+echo $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
 $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
 
 echo "5. Convert skeleton format, simplify the skeleton into a graph"
