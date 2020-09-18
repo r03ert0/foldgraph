@@ -49,6 +49,7 @@ echo "destination: $dst_dir"
 # file references
 sulc_level0=${dst_dir}${mesh}_sulcLevel0.ply
 sulc_map=${dst_dir}${mesh}_sulcMap.txt
+holes_LUT=${dst_dir}${mesh}_holesLUT.txt
 holes_surf=${dst_dir}${mesh}_holesSurf.ply
 holes_vol=${dst_dir}${mesh}_holesVol
 skeleton=${dst_dir}${mesh}_skel.cgal
@@ -69,7 +70,17 @@ mp="$MY_DIR/../bin/meshparam/meshparam"
 if [ "$precomputed_holes_vol" == "" ]; then
     if [ "$precomputed_holes_surf" == "" ]; then
         echo "1. Light Laplace smooth, compute mean curvature, remove sulci, light Laplace smooth"
-        $mg -i "$src_mesh_file" -laplaceSmooth 0.5 10 -curv -addVal -0.1 -level 0 -o "$sulc_level0" -odata "$sulc_map" -removeVerts -laplaceSmooth 0.5 10 -o "$holes_surf"
+        $mg \
+            -i "$src_mesh_file" \
+            -laplaceSmooth 0.5 10 \
+            -curv \
+            -addVal -0.1 \
+            -level 0 \
+            -o "$sulc_level0" \
+            -odata "$sulc_map" \
+            -removeVerts "$holes_LUT" \
+            -laplaceSmooth 0.5 10 \
+            -o "$holes_surf"
 
         #echo "2. Make spherical"
         #$mp -i "$sulc_level0" -o "$spherical"
@@ -88,8 +99,12 @@ fi
 
 echo "4. Skeletonise"
 $mg -i "$holes_vol.ply" -o "$holes_vol.off"
-echo $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
 $sk "$holes_vol.off" "$skeleton" "$skeleton_correspondances"
+status=$?
+if [ $status != 0 ]; then
+    echo "ERROR"
+    exit 1
+fi
 
 echo "5. Convert skeleton format, simplify the skeleton into a graph"
 python "$c2c" "$skeleton" > "$skeleton_curves"
