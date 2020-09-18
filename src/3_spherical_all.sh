@@ -3,7 +3,7 @@
 # spherical_all
 # Roberto Toro, April 2019
 
-RAW="../data/raw"
+SRC="../data/derived/skeleton"
 DEST="../data/derived/spherical"
 
 # external commands
@@ -18,5 +18,5 @@ cat ../data/subjects.txt| while read -r s; do
     mkdir -p "$DEST/$sub";
 
     echo "Make spherical meshes"
-    $mp -i $RAW/$s -o $DEST/$sub/${mesh}_spherical.ply
+    $mp -i "$SRC/$sub/${mesh}_sulcLevel0.ply" -o "$DEST/$sub/${mesh}_spherical.ply"
 done

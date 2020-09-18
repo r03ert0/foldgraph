@@ -6,8 +6,8 @@ DEST="../data/derived/skeleton"
 # external command
 f="./fold_graph.sh" # fold_graph v5
 
-cat ../data/subjects.txt| while read -r s; do
-    echo "s: $s"
+cat "../data/subjects.txt"| while read -r s; do
+    echo -e "\ns: $s"
     mesh=${s#*/}
     sub=${s%/*}
 
