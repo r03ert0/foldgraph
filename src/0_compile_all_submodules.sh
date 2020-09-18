@@ -34,4 +34,24 @@ if [ ! -f "$BASE_DIR/bin/volume/volume" ]; then
     source compile.sh
 fi
 
-cd "$BASE_DIR/src"
+echo "Download and compile graphite"
+if [ ! -f "$BASE_DIR/bin/graphite3_1.7.3/" ]; then
+    cd "$BASE_DIR/src"
+    wget https://gforge.inria.fr/frs/download.php/file/38234/graphite3_1.7.3.zip
+    mv graphite3_1.7.3.zip ../bin/
+    cd ../bin/ || exit
+    unzip graphite3_1.7.3.zip
+    rm graphite3_1.7.3.zip
+    cd graphite3_1.7.3 || exit
+
+    # patch cmake options to generate binaries
+    patch GraphiteThree/geogram/CMakeOptions.txt <<EOF
+15c15
+< set(GEOGRAM_LIB_ONLY ON)
+---
+> #set(GEOGRAM_LIB_ONLY ON)
+EOF
+
+    bash make_it.sh
+    cd "$BASE_DIR/src"
+fi
