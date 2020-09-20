@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 RAW="../data/raw"
-DEST="../data/derived/skeleton"
+DEST="../data/derived"
 
 # external command
 f="./fold_graph.sh" # fold_graph v5.1
