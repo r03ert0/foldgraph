@@ -7,11 +7,13 @@ sphere and then into a disc (using a stereographic projection). We
 use that flatten representation to flatten the mesh's foldgraph.
 '''
 
-import igl
+import sys
 import numpy as np
+import igl
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KDTree
-import sys
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
 _,path_base = sys.argv
 
@@ -81,7 +83,7 @@ i,j = 0,0
 for x,y,z in s:
     a = np.arctan2(y,x)
     b = np.arccos(-z/R)
-    st[i,:] = [b*np.cos(a),b*np.sin(a)]
+    st[i,:] = [-b*np.cos(a),b*np.sin(a)]
     if lut[i]>=0:
         stg[j,:] = st[i,:]
         j += 1
@@ -150,13 +152,24 @@ min_width = np.min([np.min(width) for _,width in skeleton])
 max_width = np.max([np.max(width) for _,width in skeleton])
 print(min_width, max_width)
 
-import matplotlib.pyplot as plt
-from matplotlib import cm
+# save flat skeleton
+file = open("%s_skel_curves_flat.txt"%path_base, "w")
+nverts = np.sum([len(line) for line,_ in skeleton])
+nedges = nverts - len(skeleton)
+file.write("%i 0 %i\n"%(nverts, nedges))
+for line,_ in skeleton:
+    for x,y in line:
+        file.write("%g %g 0\n"%(x,y))
+nedges = 0
+for line,_ in skeleton:
+    for i in range(nedges,nedges+len(line)-1):
+        file.write("%i %i\n"%(i,i+1))
+    nedges += len(line)
+file.close()
 
+# save figure with each gyri in a different colour
 tab20 = cm.get_cmap("tab20")
-rainbow = cm.get_cmap("rainbow")
 plt.figure(figsize=(15,15))
-# plt.scatter(stg[:,0],stg[:,1], marker=".", color="black", alpha=0.1)
 for i,(line,width) in enumerate(skeleton):
     for j in range(1,len(line)):
         val = (width[j]-min_width)/(max_width-min_width)
@@ -164,8 +177,22 @@ for i,(line,width) in enumerate(skeleton):
           [line[j-1][0],line[j][0]],
           [line[j-1][1],line[j][1]],
           linewidth=1 + 14*val,
-          #color=rainbow(val)
           color=tab20(i%20)
         )
 plt.axis("equal")
-plt.savefig("%s_flat.svg"%path_base)
+plt.savefig("%s_skel_curves_flat_gyri.svg"%path_base)
+
+# save figure mapping width on gyri
+rainbow = cm.get_cmap("rainbow")
+plt.figure(figsize=(15,15))
+for i,(line,width) in enumerate(skeleton):
+    for j in range(1,len(line)):
+        val = (width[j]-min_width)/(max_width-min_width)
+        plt.plot(
+          [line[j-1][0],line[j][0]],
+          [line[j-1][1],line[j][1]],
+          linewidth=1 + 14*val,
+          color=rainbow(val)
+        )
+plt.axis("equal")
+plt.savefig("%s_skel_curves_flat_width.svg"%path_base)
