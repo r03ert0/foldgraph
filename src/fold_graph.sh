@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # fold_graph v5.1
 # Roberto Toro, December 2019
@@ -10,7 +10,7 @@
 # Optional: A mesh with sulci removed to use instead of computing one
 
 # directory of the current script
-MY_DIR="`dirname \"$0\"`"
+MY_DIR=$(dirname "$0")
 
 # parse arguments
 while [[ $# -gt 0 ]]
@@ -90,7 +90,7 @@ if [ "$precomputed_holes_vol" == "" ]; then
     fi
 
     echo "2. Extrude the mesh"
-    $mg -i "$holes_surf" -extrude -1 -o "$holes_vol.ply"
+    $mg -i "$holes_surf" -extrude -0.3 -o "$holes_vol.ply"
 else
     echo "1. Using precomputed volumetric surface without sulci"
     cp "$precomputed_holes_vol" "$holes_vol.ply"
